@@ -22,6 +22,5 @@ def add_item():
 
 @app.route("/item/<id>/delete", methods=["POST"])
 def delete_item(id):
-    print(id)
     session_items.delete_item(id)
     return redirect(url_for("index"))
