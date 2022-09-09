@@ -1,4 +1,3 @@
-from flask import session
 import os
 import requests
 
@@ -21,21 +20,6 @@ def get_lists():
 
     return response.json()
 
-
-def get_item(id):
-    """
-    Fetches the saved item with the specified ID.
-
-    Args:
-        id: The ID of the item.
-
-    Returns:
-        item: The saved item, or None if no items match the specified ID.
-    """
-    items = get_items()
-    return next((item for item in items if item["id"] == int(id)), None)
-
-
 def add_item(title, list_id):
     """
     Adds a new item with the specified title to the session.
@@ -47,7 +31,6 @@ def add_item(title, list_id):
     Returns:
         item: The saved item.
     """
-    board_id = os.getenv("TRELLO_BOARD_ID")
     api_key = os.getenv("TRELLO_API_KEY")
     api_token = os.getenv("TRELLO_API_TOKEN")
 
@@ -81,7 +64,7 @@ def delete_item(id):
 
     query = {"key": api_key, "token": api_token}
 
-    response = requests.request("DELETE", url, params=query)
+    requests.request("DELETE", url, params=query)
 
 def move_item(id, list_id):
     """
@@ -98,4 +81,4 @@ def move_item(id, list_id):
 
     query = {"key": api_key, "token": api_token, "idList": list_id}
 
-    response = requests.request("PUT", url, params=query)
+    requests.request("PUT", url, params=query)
