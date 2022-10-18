@@ -11,8 +11,19 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        <!-- List the todo items here -->
+        {% for item in items %}
+          <li>{{item.title}}
+            <form class="d-inline-flex form-inline" action={{url_for("delete_item", id=item.id)}} method="post">
+              <input type="submit" value="Delete"/>
+            </form>
+          </li>
+        {% endfor %}
       </ul>
+      <form action={{url_for("add_item")}} method="post">
+        <label for="title">Title</label>
+        <input name="title" id="title" required/>
+        <input type="submit"/>
+      </form>
     </div>
   </div>
 {% endblock %}
