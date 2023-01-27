@@ -5,7 +5,7 @@ description = "A simple ToDo app for your DevOps apprenticeship"
 authors = []
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.11"
 Flask = "^2.0.3"
 python-dotenv = "^0.14.0"
 requests = "^2.28.1"
@@ -14,7 +14,17 @@ requests = "^2.28.1"
 
 [tool.poetry.group.dev.dependencies]
 yapf = "^0.32.0"
+python-lsp-server = {extras = ["pyflakes", "rope", "yapf"], version = "^1.6.0"}
+pylsp-rope = "^0.1.10"
+pylsp-mypy = "^0.6.3"
+poetry-types = "^0.3.3"
+mypy = { git = "https://github.com/python/mypy.git" }
+pytest = "^7.2.0"
 
+
+[tool.poetry.group.types.dependencies]
+types-flask = "^1.1.6"
+types-requests = "^2.28.11.5"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
