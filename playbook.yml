@@ -1,0 +1,86 @@
+---
+- name: Install To-Do application
+  vars_prompt:
+    - name: board_id
+      prompt: Enter Board ID
+      private: false
+    - name: trello_api_key
+      prompt: Enter Trello API key
+      private: true
+    - name: trello_api_token
+      prompt: Enter Trello API Token
+      private: true
+    - name: secret_key
+      prompt: Enter secret key for app
+      private: true 
+  hosts: servers
+  remote_user: ec2-user
+  environment:
+    POETRY_HOME: /opt/poetry
+  tasks:
+  - name: Update all packages
+    become: yes
+    ansible.builtin.yum:
+      name: '*'
+      state: latest
+  - name: Install required packages
+    become: yes
+    ansible.builtin.yum:
+      name:
+        - '@development'
+        - git
+        - libffi-devel
+        - bzip2-devel
+        - wget
+        - openssl11-devel
+      state: present
+  - name: Install Python 3.11
+    become: yes
+    ansible.builtin.shell: |
+      wget https://www.python.org/ftp/python/3.11.2/Python-3.11.2.tgz
+      tar -xf Python-3.11.2.tgz
+      cd Python-3.11.2
+      ./configure --enable-optimizations
+      make -j $(nproc)
+      make altinstall
+    args:
+      creates: /usr/local/bin/python3.11
+  - name: Install Poetry
+    become: yes
+    ansible.builtin.shell: |
+      curl -sSL https://install.python-poetry.org | /usr/local/bin/python3.11 -
+    args:
+      creates: "{{ lookup('ansible.builtin.env', 'POETRY_HOME') }}/bin/poetry"
+  - name: Make folder for app
+    become: yes
+    ansible.builtin.file:
+      owner: ec2-user
+      path: /opt/todo_app
+      state: directory
+  - name: Git checkout
+    ansible.builtin.git:
+      repo: 'https://github.com/TheConfuZzledDude/DevOps-Course-Starter.git'
+      dest: /opt/todo_app
+      version: exercise-3
+  - name: Install Python dependencies
+    ansible.builtin.shell: |
+      cd /opt/todo_app
+      $POETRY_HOME/bin/poetry install
+  - name: Create .env file
+    ansible.builtin.template:
+      src: env.j2
+      dest: /opt/todo_app/.env
+  - name: Copy service file
+    become: yes
+    ansible.builtin.copy:
+      src: todoapp.service
+      dest: /etc/systemd/system/todoapp.service
+  - name: Start todo app
+    become: yes
+    ansible.builtin.systemd:
+      name: todoapp.service
+      daemon_reload: true
+      state: restarted
+
+
+
