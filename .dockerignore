@@ -1,0 +1,7 @@
+.env
+.git
+.gitignore
+.github
+.vscode
+playbook.yml
+inventory.yml

@@ -66,6 +66,24 @@ Run the following
 poetry run pytest
 ```
 
+## Running in Docker
+
+Build the Docker images by doing:
+```bash
+docker build --target development --tag todo-app:dev .
+docker build --target production --tag todo-app:prod .
+```
+
+You can run the production image by doing
+```bash
+docker run --env-file .env -p 8000:80 todo-app:prod
+```
+
+And you can run the development image by doing
+```bash
+docker run --env-file .env -p 5000:5000 --mount type=bind,source="$(pwd)"/todo_app,target=/app/todo_app todo-app:dev
+```
+
 ## Running on Ansible
 
 Make sure Ansible is installed, and run the following (substituting the IPs in inventory.yml with working nodes):
