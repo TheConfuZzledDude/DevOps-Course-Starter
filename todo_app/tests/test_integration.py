@@ -13,8 +13,6 @@ def client():
     file_path = find_dotenv(".env.test")
     load_dotenv(file_path, override=True)
 
-    print("Hello", os.environ)
-
     test_app = app.create_app()
 
     with test_app.test_client() as client:
