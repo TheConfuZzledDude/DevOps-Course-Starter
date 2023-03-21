@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
-      {% for list_id, list_name, cards in lists %}
+      {% for list_id, list_name, cards in view_model.lists %}
         <h3>{{list_name}}</h3>
         <ul class="list-group mb-4">
           {% for item in cards %}
@@ -20,7 +20,7 @@
               </form>
             <form class="d-inline-flex form-inline" action={{url_for("move_item", id=item.id)}} method="post">
                 <select name="idList">
-                  {% for id,name,_ in lists %}
+                  {% for id,name,_ in view_model.lists %}
                     <option value={{id}}>{{name}}</option>
                   {% endfor %}
                 </select>
