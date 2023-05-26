@@ -7,4 +7,5 @@ class TrelloList:
     name: str
     items: list[Item]
 
-
+    def __iter__(self):
+        return iter((self.id, self.name, self.items))
