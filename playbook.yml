@@ -63,9 +63,9 @@
       dest: /opt/todo_app
       version: exercise-3
   - name: Install Python dependencies
-    ansible.builtin.shell: |
-      cd /opt/todo_app
-      $POETRY_HOME/bin/poetry install
+    ansible.builtin.shell:
+      chdir: /opt/todo_app
+      cmd: $POETRY_HOME/bin/poetry install
   - name: Create .env file
     ansible.builtin.template:
       src: env.j2

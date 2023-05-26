@@ -65,7 +65,6 @@ Run the following
 ```bash
 poetry run pytest
 ```
-
 ## Running in Docker
 
 Build the Docker images by doing:
