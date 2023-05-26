@@ -14,3 +14,7 @@ CMD ["gunicorn", "--bind", "0.0.0.0:80", "todo_app.app:create_app()"]
 FROM base as development
 EXPOSE 5000/tcp
 CMD ["flask", "run", "--host", "0.0.0.0"]
+
+FROM base as test
+ENTRYPOINT ["/etc/poetry/bin/poetry", "run", "pytest"]
+
