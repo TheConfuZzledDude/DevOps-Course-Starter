@@ -42,6 +42,8 @@ Also, create board on Trello and copy the board id into the `.env` file under th
 
 ## Running the App
 
+A production version of the app is deployed to <https://zachary-devops-my-todo-app.azurewebsites.net/>
+
 Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
 ```bash
 poetry run flask run
@@ -69,18 +71,33 @@ poetry run pytest
 
 Build the Docker images by doing:
 ```bash
-docker build --target development --tag todo-app:dev .
-docker build --target production --tag todo-app:prod .
+docker build --target development --tag my-todo-app:dev .
+docker build --target production --tag my-todo-app:prod .
 ```
 
 You can run the production image by doing
 ```bash
-docker run -it --env-file .env -p 8000:80 todo-app:prod
+docker run -it --env-file .env -p 8000:80 my-todo-app:prod
 ```
 
 And you can run the development image by doing
 ```bash
 docker run -it --env-file .env -p 5000:5000 --mount type=bind,source="$(pwd)"/todo_app,target=/app/todo_app todo-app:dev
+```
+
+The Docker image is available on Docker Hub as [confuzzled/my-todo-app](https://hub.docker.com/r/confuzzled/my-todo-app) and can be pulled with
+```bash
+docker pull confuzzled/my-todo-app
+```
+
+To push the image built earlier, first make sure you are logged in with `docker login`. Then, tag the image by doing
+```bash
+docker tag my-todo-app:prod confuzzled/my-todo-app:latest
+```
+
+and then push it by doing 
+```bash
+docker push confuzzled/my-todo-app:latest
 ```
 
 ## Running on Ansible
