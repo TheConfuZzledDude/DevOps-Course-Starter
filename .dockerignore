@@ -5,3 +5,4 @@
 .vscode
 playbook.yml
 inventory.yml
+**/__pycache__
